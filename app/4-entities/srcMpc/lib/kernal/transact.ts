@@ -2,8 +2,8 @@ import { CLIOpts, createCalls } from "@/app/4-entities/srcMpc/evm";
 import { ethers } from "ethers";
 import { Client, Presets } from "userop";
 // @ts-ignore
+import config from "@/app/4-entities/config.json";
 import { SilentWallet } from "@/app/4-entities/silentWallet";
-import config from "@/app/4-entities/srcMpc/config.json";
 
 export default async function main(opts: CLIOpts): Promise<void> {
     const calls = await createCalls(
