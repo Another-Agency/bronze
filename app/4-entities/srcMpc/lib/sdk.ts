@@ -1,5 +1,6 @@
 // import { deleteStorage, isStorageExist } from './storage';
 import { IP1KeyShare, randBytes } from "@silencelaboratories/ecdsa-tss";
+//import qrcode from "qrcode-terminal";
 import qrcode from "qrcode-terminal";
 import { v4 as uuid } from "uuid";
 import * as KeyGenAction from "./actions/keyGen";
