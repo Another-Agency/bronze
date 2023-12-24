@@ -1,28 +1,28 @@
-// app/routes/api/getToken.ts
+// app/routes/api/getToken/route.ts
 import { SdkError } from "@/app/4-entities/srcMpc/lib/error";
-//import type { NextApiRequest, NextApiResponse } from 'next'
+
+const baseUrl = "https://us-central1-mobile-wallet-mm-snap.cloudfunctions.net";//import type { NextApiRequest, NextApiResponse } from 'next'
 
 export async function POST(req: Request, res: Response) {
     try {
         const { pairingId, signature } = await req.json();
+        const url = baseUrl + `/getToken`;
 
-        // Replace with your actual logic to fetch the token, etc.
-        const data: {
-            token: string;
-            appPublicKey: string;
-            deviceName: string;
-            tokenExpiration: number;
-            backupData?: string;
-        }
+        const data = {
+            token: "token",
+            appPublicKey: "appPublicKey",
+            deviceName: "deviceName",
+            tokenExpiration: 0,
+            backupData: "backupData",
+        };
 
-        // Assuming data contains the token and other necessary information
-        res.status(200).json({ response: data });
+        return Response.json({ success: true, data }, { status: 200 })
     } catch (error) {
         console.error(error);
         if (error instanceof SdkError) {
-            res.status(500).json({ error: error.message });
+            return Response.json({ error: error.message }, { status: 400 });
         } else {
-            res.status(500).json({ error: 'An unknown error occurred' });
+            return Response.json({ error: "Unknown error" }, { status: 500 });
         }
     }
 }
