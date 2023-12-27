@@ -1,5 +1,5 @@
-import { sendMessage } from '@/app/4-entities/srcMpc/api/firebase/route';
 import { ErrorCode, SdkError } from '../error';
+import { sendMessage } from '../firebaseEndpoints';
 import { BackupConversation, PairingData } from '../types';
 
 export const backup = async (

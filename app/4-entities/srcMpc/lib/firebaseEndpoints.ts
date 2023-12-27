@@ -1,4 +1,4 @@
-import { ErrorCode, SdkError } from "@/app/4-entities/srcMpc/lib/error";
+import { ErrorCode, SdkError } from "./error";
 
 const baseUrl = "https://us-central1-mobile-wallet-mm-snap.cloudfunctions.net";
 // const baseUrl = 'http://127.0.0.1:5001/mobile-wallet-mm-snap/us-central1';

@@ -1,4 +1,3 @@
-import { sendMessage } from "@/app/4-entities/srcMpc/api/firebase/route";
 import {
     IP1KeyShare,
     P1KeyGen,
@@ -6,6 +5,7 @@ import {
 } from "@silencelaboratories/ecdsa-tss";
 import _sodium, { base64_variants } from "libsodium-wrappers";
 import { ErrorCode, SdkError } from "../error";
+import { sendMessage } from "../firebaseEndpoints";
 import { KeygenConversation, PairingData } from "../types";
 import * as utils from "../utils";
 

@@ -1,12 +1,12 @@
-import {
-    getTokenEndpoint,
-    refreshTokenEndpoint,
-    sendMessage,
-} from '@/app/4-entities/srcMpc/api/firebase/route';
 import _sodium from 'libsodium-wrappers';
 import { v4 as uuid } from 'uuid';
 import { decMessage } from '../entropy';
 import { ErrorCode, SdkError } from '../error';
+import {
+    getTokenEndpoint,
+    refreshTokenEndpoint,
+    sendMessage,
+} from '../firebaseEndpoints';
 import { DistributedKey, PairingData, StorageData } from '../types';
 import * as utils from '../utils';
 
