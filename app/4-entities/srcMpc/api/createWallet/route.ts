@@ -25,17 +25,19 @@ async function createWallet() {
             parser: "json",
         })
     );
+    return wallet;
 }
 
 export async function GET(req: Request, res: Response) {
     try {
-        await createWallet();
+        const wallet = await createWallet();
         console.log(`Config written to ${CONFIG_PATH}`);
         console.log("wallet created", createWallet);
 
-        return Response.json({ message: "wallet created" }, { status: 200 })
+        return Response.json({ message: "wallet created", wallet }, { status: 200 })
     } catch (e) {
         console.error(e);
+        return Response.json({ message: "wallet not created", e }, { status: 500 })
     }
 }
 

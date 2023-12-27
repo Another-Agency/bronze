@@ -1,5 +1,4 @@
 "use client"
-
 export class SdkError extends Error {
     code: number;
     constructor(message: string, code: ErrorCode) {

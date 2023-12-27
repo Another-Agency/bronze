@@ -26,6 +26,7 @@
     "qrcode-terminal": "^0.12.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-qr-code": "^2.0.12",
     "userop": "^0.3.7",
     "uuid": "^9.0.1"
   },

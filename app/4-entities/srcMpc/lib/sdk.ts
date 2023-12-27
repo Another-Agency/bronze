@@ -13,15 +13,21 @@ import { fromHexStringToBytes } from "./utils";
 
 async function initPairing() {
   const qrCode = await PairingAction.init();
-  qrcode.generate(
-    qrCode,
-    {
-      small: true,
-    },
-    function (qr_code: any) {
-      console.log(qr_code);
-    }
-  );
+
+  console.log("env", process.env.NEXT_PUBLIC_IS_BROWSER);
+  // Print QR code to console if program is running in terminal otherwise return QR code in UI
+  if (process.env.NEXT_PUBLIC_IS_BROWSER !== "true") {
+    qrcode.generate(
+      qrCode,
+      {
+        small: true,
+      },
+      function (qr_code: any) {
+        console.log(qr_code);
+      }
+    );
+  }
+  console.log("Server Side qrCode", qrCode);
   return qrCode;
 }
 
@@ -40,7 +46,7 @@ async function runKeygen() {
   const silentShareStorage: StorageData = await getSilentShareStorage();
   let pairingData = silentShareStorage.pairingData;
   // Refresh token if it is expired
-  if (pairingData.tokenExpiration < Date.now() - 60000) {
+  if (pairingData.tokenExpiration < Date.now() - 600000) {
     pairingData = await refreshPairing();
   }
   const wallets = silentShareStorage.wallets;
