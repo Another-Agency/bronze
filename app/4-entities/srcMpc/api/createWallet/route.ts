@@ -13,11 +13,15 @@ const INIT_CONFIG = {
         context: {},
     },
 };
-const CONFIG_PATH = path.resolve(__dirname, "../config.json");
+const CONFIG_PATH = path.resolve(process.cwd(), "./app/4-entities/config.json");
+console.log("createWallet Route", CONFIG_PATH);
 
 // Now lets create the wallet
 async function createWallet() {
+    console.log("createWallet Function")
+
     const wallet = await SilentWallet.generate();
+    console.log("wallet created", wallet);
 
     return fs.writeFile(
         CONFIG_PATH,
@@ -25,7 +29,6 @@ async function createWallet() {
             parser: "json",
         })
     );
-    return wallet;
 }
 
 export async function GET(req: Request, res: Response) {

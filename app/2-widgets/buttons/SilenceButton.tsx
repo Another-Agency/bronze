@@ -1,5 +1,6 @@
 "use client"
-import { useState } from 'react';
+import { SdkError } from '@/app/4-entities/srcMpc/lib/error';
+import { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
 
 export function SilenceButton() {
@@ -16,10 +17,19 @@ export function SilenceButton() {
 
             console.log("SilenceButton qrCode", data.qrCode);
         } catch (error) {
-            console.error("SilenceButton error", error);
+            if (error instanceof SdkError) {
+                // Handle SdkError instances differently
+                console.error("SilenceButton SdkError", error.message);
+            } else {
+                console.error("SilenceButton error", error);
+            }
             return;
         }
     }
+
+    useEffect(() => {
+        console.log("qrCode state", qrCode);
+    }, [qrCode]);
 
     return (
         <>

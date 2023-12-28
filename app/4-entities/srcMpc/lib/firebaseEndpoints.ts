@@ -9,29 +9,41 @@ interface Response {
 }
 
 const modifiedFetch = async (input: RequestInfo | URL, init?: RequestInit) => {
-    return await fetch(input, init)
-        .then(async (data) => {
-            const temp: Response = await data.json();
-            if (temp.error) {
-                throw new SdkError(temp.error, ErrorCode.FirebaseError);
-            } else return temp.response;
-        })
-        .catch((error) => {
-            console.log(error);
-            if (error instanceof SdkError) {
-                throw error;
-            }
-            if (error instanceof Error) {
-                throw error;
-            } else throw new SdkError(`unkown-error`, ErrorCode.FirebaseError);
-        });
+    console.log("modifiedFetch", input, init);
+    try {
+        const data = await fetch(input, init);
+        console.log("modifiedFetch", data);
+
+        const temp: Response = await data.json();
+        console.log("modifiedFetch", temp);
+
+        if (temp.error) {
+            throw new SdkError(temp.error, ErrorCode.FirebaseError);
+        } else {
+            return temp.response;
+        }
+    } catch (error) {
+        console.log(error);
+        if (error instanceof SdkError) {
+            return Promise.reject(error);
+        }
+        if (error instanceof Error) {
+            return Promise.reject(error);
+        } else {
+            return Promise.reject(new SdkError(`unknown-error`, ErrorCode.FirebaseError));
+        }
+    }
 };
 
 export const getTokenEndpoint = async (
     pairingId: string,
     signature: string
 ) => {
+    console.log("getTokenEndpoint", pairingId, signature);
+
     const url = baseUrl + `/getToken`;
+    console.log("getTokenEndpoint", url);
+
     const data: {
         token: string;
         appPublicKey: string;
@@ -45,6 +57,11 @@ export const getTokenEndpoint = async (
         },
         body: JSON.stringify({ pairingId, signature }),
     });
+    if (!data) {
+        throw new SdkError("No token received", ErrorCode.FirebaseError);
+    }
+    console.log("getTokenEndpoint", data);
+
     return data;
 };
 

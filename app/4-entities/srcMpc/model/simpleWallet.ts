@@ -40,17 +40,28 @@ export class SilentWallet extends Signer {
   }
 
   public static async generate(): Promise<SilentWallet> {
+    console.log("generate wallet");
     await sdk.initPairing();
+    console.log("pairing init done", sdk);
+
     await sdk.runPairing();
+    console.log("pairing done", sdk);
+
     const keygenResult = await sdk.runKeygen();
+    console.log("keygen done", keygenResult);
 
     const p1KeyShare: IP1KeyShare = keygenResult.distributedKey.keyShareData;
     if (!p1KeyShare) {
       throw new Error("Failed to generate p1KeyShare");
     }
+    console.log("p1KeyShare", p1KeyShare);
 
     const publicKey = p1KeyShare.public_key;
+    console.log("publicKey", publicKey);
+
     const address = ethers.utils.computeAddress(`0x04${publicKey}`);
+    console.log("address", address);
+
     return new SilentWallet(address, publicKey, p1KeyShare, keygenResult);
   }
 

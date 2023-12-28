@@ -1,6 +1,5 @@
 // import { deleteStorage, isStorageExist } from './storage';
 import { IP1KeyShare, randBytes } from "@silencelaboratories/ecdsa-tss";
-//import qrcode from "qrcode-terminal";
 import qrcode from "qrcode-terminal";
 import { v4 as uuid } from "uuid";
 import * as KeyGenAction from "./actions/keyGen";
@@ -31,9 +30,16 @@ async function initPairing() {
   return qrCode;
 }
 
+console.log("initPairing in sdk", initPairing);
 async function runPairing() {
+  console.log("runPairing in sdk");
+
   const result = await PairingAction.getToken();
+  console.log("runPairing result", result);
+
   await saveSilentShareStorage(result.silentShareStorage);
+  console.log("runPairing result.silentShareStorage", result.silentShareStorage);
+
   return {
     pairing_status: "paired",
     device_name: result.deviceName,

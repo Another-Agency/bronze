@@ -19,12 +19,16 @@ export interface PairingDataInit {
 let pairingDataInit: PairingDataInit;
 
 export const init = async () => {
+    console.log("initPairing in actions/pairing");
+
     try {
         let pairingId = utils.randomPairingId();
+        console.log("pairingId", pairingId);
 
         await _sodium.ready;
         const encPair = _sodium.crypto_box_keypair();
         const signPair = _sodium.crypto_sign_keypair();
+        console.log("encPair", encPair);
 
         pairingDataInit = {
             pairingId,
@@ -37,6 +41,7 @@ export const init = async () => {
             webEncPublicKey: _sodium.to_hex(encPair.publicKey),
             signPublicKey: _sodium.to_hex(signPair.publicKey),
         });
+        console.log("qrCode pairing init", qrCode);
 
         return qrCode;
     } catch (error) {
@@ -47,6 +52,8 @@ export const init = async () => {
 };
 
 export const getToken = async () => {
+    console.log("getToken in actions/pairing");
+
     try {
         if (!pairingDataInit) {
             throw new SdkError(
@@ -56,16 +63,20 @@ export const getToken = async () => {
         }
 
         let startTime = Date.now();
+        console.log("startTime", startTime);
 
         const signature = _sodium.crypto_sign_detached(
             pairingDataInit.pairingId,
             pairingDataInit.signPair.privateKey,
         );
+        console.log("signature", signature);
 
         const data = await getTokenEndpoint(
             pairingDataInit.pairingId,
             _sodium.to_hex(signature),
         );
+        console.log("data", data);
+
         let tempDistributedKey: DistributedKey | null = null;
         let usedBackupData = false;
         if (data.backupData) {
@@ -112,6 +123,8 @@ export const getToken = async () => {
                 pairingDataInit.pairingId,
             );
         }
+        console.log("tempDistributedKey", tempDistributedKey);
+
         const pairingData: PairingData = {
             pairingId: pairingDataInit.pairingId,
             webEncPublicKey: _sodium.to_hex(pairingDataInit.encPair.publicKey),
@@ -129,6 +142,7 @@ export const getToken = async () => {
             tokenExpiration: data.tokenExpiration,
             deviceName: data.deviceName,
         };
+        console.log("getToken pairingData", pairingData);
 
         return {
             silentShareStorage: {
