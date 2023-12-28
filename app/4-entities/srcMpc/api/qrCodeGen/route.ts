@@ -1,7 +1,9 @@
+
 import { SilentWallet } from "@/app/4-entities/srcMpc/model/simpleWallet";
 import fs from "fs/promises";
 import path from "path";
 import prettier from "prettier";
+import { initPairing } from "../../lib/sdk";
 
 const INIT_CONFIG = {
     rpcUrl:
@@ -30,24 +32,18 @@ async function createWallet() {
     );
 }
 
-export async function POST(req: Request, res: Response) {
+export async function GET(req: Request, res: Response) {
     try {
-        // Extract relevant data from the request, e.g., a token or identifier
-        const { scanned } = await req.json();
 
-        if (scanned) {
-            // Resume the wallet creation process
-            const wallet = await createWallet();
-            console.log(`Wallet created: ${wallet}`);
+        const qrCodeData = await initPairing();
+        console.log("Route qrCodeData", qrCodeData);
 
-            // Respond with the wallet information or a success message
-            return Response.json({ message: "Wallet successfully created", wallet }, { status: 201 });
-        } else {
-            // Handle the case where the QR code has not been scanned
-            return Response.json({ message: "QR code not scanned" }, { status: 400 });
-        }
+        return Response.json({ message: "qrCodeData", qrCodeData }, { status: 200 })
+
     } catch (e) {
         console.error(e);
-        return Response.json({ message: "Error creating wallet", e }, { status: 500 });
+        return Response.json({ message: "wallet not created", e }, { status: 500 })
     }
 }
+
+

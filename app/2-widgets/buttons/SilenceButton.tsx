@@ -8,13 +8,14 @@ export function SilenceButton() {
 
     async function createWallet() {
         try {
-            const response = await fetch("/4-entities/srcMpc/api/createWallet");
+            const response = await fetch("/4-entities/srcMpc/api/qrCodeGen");
             console.log("SilenceButton response", response);
 
             const data = await response.json();
             console.log("SilenceButton data", data);
-            setQrCode(data.qrCode);
-            console.log("SilenceButton qrCode", data.qrCode);
+
+            setQrCode(data.qrCodeData);
+            console.log("SilenceButton qrCode", data.qrCodeData);
 
         } catch (error) {
             if (error instanceof SdkError) {
@@ -31,10 +32,38 @@ export function SilenceButton() {
         console.log("qrCode state", qrCode);
     }, [qrCode]);
 
+    async function handleQrCodeScanned() {
+        try {
+            const response = await fetch("/4-entities/srcMpc/api/createWallet", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ scanned: true }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Wallet creation response", data);
+            // Handle the response, e.g., show a success message or navigate to another page
+        } catch (error) {
+            console.error("Error notifying wallet creation", error);
+        }
+    }
+
     return (
         <>
             <button onClick={createWallet}>Create Wallet</button>
             {qrCode && <QRCode value={qrCode} />}
+
+            {qrCode && (
+                <button onClick={handleQrCodeScanned}>
+                    I've Scanned the QR Code
+                </button>
+            )}
         </>
     );
 }
