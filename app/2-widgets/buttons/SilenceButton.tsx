@@ -14,8 +14,8 @@ export function SilenceButton() {
             const data = await response.json();
             console.log("SilenceButton data", data);
             setQrCode(data.qrCode);
-
             console.log("SilenceButton qrCode", data.qrCode);
+
         } catch (error) {
             if (error instanceof SdkError) {
                 // Handle SdkError instances differently
