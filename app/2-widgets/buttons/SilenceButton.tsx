@@ -30,6 +30,10 @@ export function SilenceButton() {
 
     useEffect(() => {
         console.log("qrCode state", qrCode);
+        if (qrCode) {
+            // Automatically call handleQrCodeScanned when qrCode is set
+            handleQrCodeScanned();
+        }
     }, [qrCode]);
 
     async function handleQrCodeScanned() {
