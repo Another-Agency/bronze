@@ -1,43 +1,41 @@
-import { SilentWallet } from "@/app/4-entities/srcMpc/model/simpleWallet";
-import fs from "fs/promises";
-import path from "path";
-import prettier from "prettier";
 
-const INIT_CONFIG = {
-    rpcUrl:
-        "https://api.stackup.sh/v1/node/88b9386910e64c14fd00cb2342c5e4a8f78b9789b5e7c592e64b2dbe3442e633",
-    paymaster: {
-        rpcUrl:
-            "https://api.stackup.sh/v1/paymaster/88b9386910e64c14fd00cb2342c5e4a8f78b9789b5e7c592e64b2dbe3442e633",
-        context: {},
-    },
-};
-const CONFIG_PATH = path.resolve(process.cwd(), "./app/4-entities/config.json");
-console.log("createWallet Route", CONFIG_PATH);
+// const INIT_CONFIG = {
+//     rpcUrl:
+//         "https://api.stackup.sh/v1/node/88b9386910e64c14fd00cb2342c5e4a8f78b9789b5e7c592e64b2dbe3442e633",
+//     paymaster: {
+//         rpcUrl:
+//             "https://api.stackup.sh/v1/paymaster/88b9386910e64c14fd00cb2342c5e4a8f78b9789b5e7c592e64b2dbe3442e633",
+//         context: {},
+//     },
+// };
+// const CONFIG_PATH = path.resolve(process.cwd(), "./app/4-entities/config.json");
+// console.log("createWallet Route", CONFIG_PATH);
 
-// Now lets create the wallet
-async function createWallet() {
-    console.log("createWallet Function")
+// // Now lets create the wallet
+// async function createWallet() {
+//     console.log("createWallet Function")
 
-    const wallet = await SilentWallet.generate();
-    console.log("wallet created", wallet);
+//     const wallet = await SilentWallet.generate();
+//     console.log("wallet created", wallet);
 
-    return fs.writeFile(
-        CONFIG_PATH,
-        await prettier.format(JSON.stringify({ ...INIT_CONFIG, ...wallet }, null, 2), {
-            parser: "json",
-        })
-    );
-}
+//     return fs.writeFile(
+//         CONFIG_PATH,
+//         await prettier.format(JSON.stringify({ ...INIT_CONFIG, ...wallet }, null, 2), {
+//             parser: "json",
+//         })
+//     );
+// }
+
+
 
 export async function POST(req: Request, res: Response) {
     try {
         // Extract relevant data from the request, e.g., a token or identifier
-        const { scanned } = await req.json();
+        const { scanned, wallet } = await req.json();
 
         if (scanned) {
             // Resume the wallet creation process
-            const wallet = await createWallet();
+            const wallet = await resumeWalletCreation(wallet);
             console.log(`Wallet created: ${wallet}`);
 
             // Respond with the wallet information or a success message

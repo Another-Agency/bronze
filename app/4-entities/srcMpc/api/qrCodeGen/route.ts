@@ -15,7 +15,6 @@ const INIT_CONFIG = {
     },
 };
 const CONFIG_PATH = path.resolve(process.cwd(), "./app/4-entities/config.json");
-console.log("createWallet Route", CONFIG_PATH);
 
 // Now lets create the wallet
 async function createWallet() {
@@ -24,12 +23,19 @@ async function createWallet() {
     const wallet = await SilentWallet.generate();
     console.log("wallet created", wallet);
 
+    // save wallet to storage
+    // const storage = await getSilentShareStorage();
+    // storage.wallet = wallet;
+    // await saveSilentShareStorage(storage);
+    // console.log("wallet saved to storage", storage);
+
     return fs.writeFile(
         CONFIG_PATH,
         await prettier.format(JSON.stringify({ ...INIT_CONFIG, ...wallet }, null, 2), {
             parser: "json",
         })
     );
+
 }
 
 export async function GET(req: Request, res: Response) {

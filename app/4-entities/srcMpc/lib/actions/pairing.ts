@@ -28,7 +28,6 @@ export const init = async () => {
         await _sodium.ready;
         const encPair = _sodium.crypto_box_keypair();
         const signPair = _sodium.crypto_sign_keypair();
-        console.log("encPair", encPair);
 
         pairingDataInit = {
             pairingId,

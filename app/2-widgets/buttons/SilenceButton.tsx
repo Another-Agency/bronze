@@ -6,13 +6,17 @@ import QRCode from 'react-qr-code';
 export function SilenceButton() {
     const [qrCode, setQrCode] = useState<string | null>(null);
 
-    async function createWallet() {
+    async function getQrCode() {
         try {
             const response = await fetch("/4-entities/srcMpc/api/qrCodeGen");
             console.log("SilenceButton response", response);
 
             const data = await response.json();
             console.log("SilenceButton data", data);
+
+            //save the data in the state
+            // const saveData = await saveSilentShareStorage(data);
+            // console.log("SilenceButton saveData", saveData);
 
             setQrCode(data.qrCodeData);
             console.log("SilenceButton qrCode", data.qrCodeData);
@@ -31,19 +35,20 @@ export function SilenceButton() {
     useEffect(() => {
         console.log("qrCode state", qrCode);
         if (qrCode) {
-            // Automatically call handleQrCodeScanned when qrCode is set
-            handleQrCodeScanned();
+            // Retrieve  saveData and automatically pass it to the handleQrCodeScanned function
+            createWallet();
+
         }
     }, [qrCode]);
 
-    async function handleQrCodeScanned() {
+    async function createWallet() {
         try {
             const response = await fetch("/4-entities/srcMpc/api/createWallet", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ scanned: true }),
+                body: JSON.stringify({ scanned: true, wallet: qrCode }),
             });
 
             if (!response.ok) {
@@ -60,11 +65,11 @@ export function SilenceButton() {
 
     return (
         <>
-            <button onClick={createWallet}>Create Wallet</button>
+            <button onClick={getQrCode}>Create Wallet</button>
             {qrCode && <QRCode value={qrCode} />}
 
             {qrCode && (
-                <button onClick={handleQrCodeScanned}>
+                <button onClick={createWallet}>
                     I've Scanned the QR Code
                 </button>
             )}
