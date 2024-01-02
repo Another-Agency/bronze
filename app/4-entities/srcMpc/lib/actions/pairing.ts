@@ -42,7 +42,7 @@ export const init = async () => {
         });
         console.log("qrCode pairing init", qrCode);
 
-        return qrCode;
+        return { qrCode, pairingDataInit };
     } catch (error) {
         if (error instanceof Error) {
             throw error;
@@ -50,7 +50,7 @@ export const init = async () => {
     }
 };
 
-export const getToken = async () => {
+export const getToken = async (pairingDataInit: PairingDataInit) => {
     console.log("getToken in actions/pairing");
 
     try {

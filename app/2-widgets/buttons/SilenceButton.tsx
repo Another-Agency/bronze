@@ -5,21 +5,25 @@ import QRCode from 'react-qr-code';
 
 export function SilenceButton() {
     const [qrCode, setQrCode] = useState<string | null>(null);
+    //const [pairingData, setPairingData] = useState<string | null>(null);
+    const [storageId, setStorageId] = useState<string | null>(null);
 
     async function getQrCode() {
         try {
-            const response = await fetch("/4-entities/srcMpc/api/qrCodeGen");
+            const response = await fetch("/4-entities/srcMpc/api/qrCodePairing");
             console.log("SilenceButton response", response);
 
             const data = await response.json();
             console.log("SilenceButton data", data);
 
-            //save the data in the state
-            // const saveData = await saveSilentShareStorage(data);
-            // console.log("SilenceButton saveData", saveData);
+            setQrCode(data.qrCode);
+            console.log("SilenceButton qrCode", data.qrCode);
 
-            setQrCode(data.qrCodeData);
-            console.log("SilenceButton qrCode", data.qrCodeData);
+            // setPairingData(data.pairingDataInit);
+            // console.log("SilenceButton pairingData", data.pairingDataInit);
+
+            setStorageId(data.id);
+            console.log("SilenceButton storage", data.id);
 
         } catch (error) {
             if (error instanceof SdkError) {
@@ -36,30 +40,29 @@ export function SilenceButton() {
         console.log("qrCode state", qrCode);
         if (qrCode) {
             // Retrieve  saveData and automatically pass it to the handleQrCodeScanned function
-            createWallet();
+            runPairing();
 
         }
     }, [qrCode]);
 
-    async function createWallet() {
+    async function runPairing() {
         try {
-            const response = await fetch("/4-entities/srcMpc/api/createWallet", {
+            const response = await fetch("/4-entities/srcMpc/api/runPairing", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ scanned: true, wallet: qrCode }),
+                body: JSON.stringify({ scanned: true, id: storageId }),
             });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log("Wallet creation response", data);
-            // Handle the response, e.g., show a success message or navigate to another page
+            console.log("SB Run Pairing Response", response);
         } catch (error) {
-            console.error("Error notifying wallet creation", error);
+            if (error instanceof SdkError) {
+                // Handle SdkError instances differently
+                console.error("SilenceButton SdkError", error.message);
+            } else {
+                console.error("SilenceButton error", error);
+            }
+            return;
         }
     }
 
@@ -69,7 +72,7 @@ export function SilenceButton() {
             {qrCode && <QRCode value={qrCode} />}
 
             {qrCode && (
-                <button onClick={createWallet}>
+                <button onClick={getQrCode}>
                     I've Scanned the QR Code
                 </button>
             )}
