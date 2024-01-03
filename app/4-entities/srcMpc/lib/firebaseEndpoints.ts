@@ -9,13 +9,13 @@ interface Response {
 }
 
 const modifiedFetch = async (input: RequestInfo | URL, init?: RequestInit) => {
-    console.log("modifiedFetch", input, init);
+    console.log("modifiedFetch start", input, init);
     try {
         const data = await fetch(input, init);
-        console.log("modifiedFetch", data);
+        //console.log("modifiedFetch data", data);
 
         const temp: Response = await data.json();
-        console.log("modifiedFetch", temp);
+        //console.log("modifiedFetch temp", temp);
 
         if (temp.error) {
             throw new SdkError(temp.error, ErrorCode.FirebaseError);
@@ -39,10 +39,8 @@ export const getTokenEndpoint = async (
     pairingId: string,
     signature: string
 ) => {
-    console.log("getTokenEndpoint", pairingId, signature);
 
     const url = baseUrl + `/getToken`;
-    console.log("getTokenEndpoint", url);
 
     const data: {
         token: string;
@@ -60,7 +58,6 @@ export const getTokenEndpoint = async (
     if (!data) {
         throw new SdkError("No token received", ErrorCode.FirebaseError);
     }
-    console.log("getTokenEndpoint", data);
 
     return data;
 };

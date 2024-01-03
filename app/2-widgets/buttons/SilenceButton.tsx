@@ -1,5 +1,6 @@
 "use client"
 import { SdkError } from '@/app/4-entities/srcMpc/lib/error';
+import { createWallet } from '@/app/4-entities/srcMpc/model/functionalWallet';
 import { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
 
@@ -14,11 +15,9 @@ export function SilenceButton() {
     async function getQrCode() {
         try {
             const response = await fetch("/4-entities/srcMpc/api/qrCodePairing");
-            console.log("SilenceButton response", response);
 
             const data = await response.json();
             console.log("SilenceButton data", data);
-
             // Convert the object to a JSON string
             const encPairPublicKey = JSON.stringify(data.pairingDataInit.encPair.publicKey);
             const encPairPrivateKey = JSON.stringify(data.pairingDataInit.encPair.privateKey);
@@ -37,13 +36,9 @@ export function SilenceButton() {
                     privateKey: signPairPrivateKey,
                 },
             };
-            console.log("SilenceButton pairingDataInitSerialized", pairingDataInitSerialized);
 
             setQrCode(data.qrCode);
-            console.log("SilenceButton qrCode", data.qrCode);
-
             setPairingData(pairingDataInitSerialized);
-            console.log("SilenceButton pairingData", pairingDataInitSerialized);
 
         } catch (error) {
             if (error instanceof SdkError) {
@@ -75,7 +70,21 @@ export function SilenceButton() {
                 },
                 body: JSON.stringify({ scanned: true, pairingDataInit: pairingData }),
             });
-            console.log("SB Run Pairing Response", response);
+            console.log("SB Pairing Response", response);
+
+            const data = await response.json();
+            console.log("SB Pairing Data", data);
+
+            const wallet = createWallet({
+                address: data.result.address,
+                publicKey: data.result.publicKey,
+                p1KeyShare: data.result.p1KeyShare,
+                keygenResult: data.result.keygenResult
+            });
+            console.log("SB wallet", wallet);
+
+            return wallet;
+
         } catch (error) {
             if (error instanceof SdkError) {
                 // Handle SdkError instances differently
@@ -92,11 +101,6 @@ export function SilenceButton() {
             <button onClick={getQrCode}>Create Wallet</button>
             {qrCode && <QRCode value={qrCode} />}
 
-            {qrCode && (
-                <button onClick={getQrCode}>
-                    I've Scanned the QR Code
-                </button>
-            )}
         </>
     );
 }

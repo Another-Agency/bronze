@@ -23,7 +23,6 @@ export const init = async () => {
 
     try {
         let pairingId = utils.randomPairingId();
-        console.log("pairingId", pairingId);
 
         await _sodium.ready;
         const encPair = _sodium.crypto_box_keypair();
@@ -40,7 +39,6 @@ export const init = async () => {
             webEncPublicKey: _sodium.to_hex(encPair.publicKey),
             signPublicKey: _sodium.to_hex(signPair.publicKey),
         });
-        console.log("qrCode pairing init", qrCode);
 
         return { qrCode, pairingDataInit };
     } catch (error) {
@@ -61,6 +59,7 @@ export const getToken = async (pairingDataInit: PairingDataInit) => {
             );
         }
 
+        await _sodium.ready;
         let startTime = Date.now();
         console.log("startTime", startTime);
 
@@ -68,22 +67,24 @@ export const getToken = async (pairingDataInit: PairingDataInit) => {
             pairingDataInit.pairingId,
             pairingDataInit.signPair.privateKey,
         );
-        console.log("signature", signature);
 
         const data = await getTokenEndpoint(
             pairingDataInit.pairingId,
             _sodium.to_hex(signature),
         );
-        console.log("data", data);
+        //console.log("getTokenEndpoint data back", data);
 
         let tempDistributedKey: DistributedKey | null = null;
         let usedBackupData = false;
         if (data.backupData) {
             try {
-                const decreptedMessage = await decMessage(data.backupData);
+                const decryptedMessage = await decMessage(data.backupData);
                 tempDistributedKey = JSON.parse(
-                    utils.uint8ArrayToUtf8String(decreptedMessage),
+                    utils.uint8ArrayToUtf8String(decryptedMessage),
                 );
+                console.log("decryptedMessage", decryptedMessage);
+                console.log("tempDistributedKey if backupData", tempDistributedKey);
+
                 await sendMessage(
                     data.token,
                     'pairing',
@@ -91,6 +92,8 @@ export const getToken = async (pairingDataInit: PairingDataInit) => {
                     false,
                     pairingDataInit.pairingId,
                 );
+                console.log("sendMessage pairing", pairingDataInit.pairingId);
+
                 usedBackupData = true;
             } catch (error) {
                 await sendMessage(

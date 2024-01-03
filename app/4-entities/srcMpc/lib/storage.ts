@@ -45,6 +45,7 @@ const saveSilentShareStorage = async (data: StorageData) => {
         }
 
         fs.writeFileSync("storage.json", JSON.stringify(data));
+        console.log("storage.json saved", data);
     } catch (error: any) {
         throw new SdkError(error.message, ErrorCode.StorageError);
     }
