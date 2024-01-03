@@ -1,7 +1,7 @@
 import { randBytes } from "@silencelaboratories/ecdsa-tss";
 import { v4 as uuid } from "uuid";
 import * as KeyGenAction from "./actions/keygen";
-import { refreshPairing } from "./sdk";
+import { RefreshToken } from "./actions/refreshToken";
 import { getSilentShareStorage, saveSilentShareStorage } from "./storage";
 import { StorageData } from "./types";
 
@@ -34,3 +34,15 @@ export async function runKeygen() {
         elapsedTime: result.elapsedTime,
     };
 }
+
+async function refreshPairing() {
+    const silentShareStorage: StorageData = await getSilentShareStorage();
+    const pairingData = silentShareStorage.pairingData;
+    const result = await RefreshToken(pairingData);
+    await saveSilentShareStorage({
+        ...silentShareStorage,
+        pairingData: result.newPairingData,
+    });
+    return result.newPairingData;
+}
+

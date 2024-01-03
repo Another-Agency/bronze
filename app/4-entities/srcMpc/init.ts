@@ -1,4 +1,4 @@
-import { SilentWallet } from "@/app/4-entities/srcMpc/model/simpleWallet";
+import { SilentWallet } from "@/app/4-entities/srcMpc/model/cliWallet";
 import fs from "fs/promises";
 import path from "path";
 import prettier from "prettier";

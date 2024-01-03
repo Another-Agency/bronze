@@ -9,7 +9,7 @@ type WalletParams = {
     provider?: any; // Replace 'any' with the actual type
 };
 
-export function createWallet({ address, publicKey, p1KeyShare, keygenResult, provider }: WalletParams) {
+export function SilenceWallet({ address, publicKey, p1KeyShare, keygenResult, provider }: WalletParams) {
     return {
         address,
         publicKey,
