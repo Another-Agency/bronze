@@ -1,9 +1,9 @@
-import { initPairing } from "../../lib/sdk";
+import * as QrCodePairing from "@/app/4-entities/srcMpc/lib/actions/initQrCode";
 
 export async function GET(req: Request, res: Response) {
     try {
 
-        const { qrCode, pairingDataInit } = await initPairing();
+        const { qrCode, pairingDataInit } = await QrCodePairing.init();
 
         return Response.json({ message: "qrCodeData and pairingData", qrCode, pairingDataInit }, { status: 200 })
 

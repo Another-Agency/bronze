@@ -2,7 +2,7 @@
 import { IP1KeyShare, randBytes } from "@silencelaboratories/ecdsa-tss";
 import qrcode from "qrcode-terminal";
 import { v4 as uuid } from "uuid";
-import * as KeyGenAction from "./actions/keyGen";
+import * as KeyGenAction from "./actions/keygen";
 import * as PairingAction from "./actions/pairing";
 import * as SignAction from "./actions/sign";
 import { ErrorCode, SdkError } from "./error";
@@ -17,7 +17,7 @@ async function initPairing() {
   // Print QR code to console if program is running in terminal otherwise return QR code in UI
   if (process.env.NEXT_PUBLIC_IS_BROWSER !== "true") {
     qrcode.generate(
-      qrCode,
+      qrCode.qrCode,
       {
         small: true,
       },
@@ -29,8 +29,8 @@ async function initPairing() {
   console.log("Server Side qrCode", qrCode);
   return qrCode;
 }
-
 console.log("initPairing in sdk", initPairing);
+
 async function runPairing() {
   console.log("runPairing in sdk");
 
