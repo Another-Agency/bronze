@@ -4,7 +4,11 @@ import { SdkError } from '@/app/4-entities/srcMpc/lib/error';
 import { useEffect, useState } from 'react';
 import QRCode from 'react-qr-code';
 
+
+//const CONFIG_PATH = path.resolve(__dirname, "../config.json");
+
 export function SilenceButton() {
+
     const [qrCode, setQrCode] = useState<string | null>(null);
     const [pairingData, setPairingData] = useState<{
         pairingId: any;
@@ -50,11 +54,11 @@ export function SilenceButton() {
     }
 
     useEffect(() => {
-        console.log("qrCode state", qrCode);
         if (qrCode) {
             createWallet(pairingData);
         }
-    }, [qrCode]);
+
+    }, [qrCode, pairingData]);
 
     return (
         <>

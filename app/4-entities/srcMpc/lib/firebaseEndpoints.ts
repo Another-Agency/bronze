@@ -9,13 +9,10 @@ interface Response {
 }
 
 const modifiedFetch = async (input: RequestInfo | URL, init?: RequestInit) => {
-    console.log("modifiedFetch start", input, init);
+    console.log("modifiedFetch event");
     try {
         const data = await fetch(input, init);
-        //console.log("modifiedFetch data", data);
-
         const temp: Response = await data.json();
-        //console.log("modifiedFetch temp", temp);
 
         if (temp.error) {
             throw new SdkError(temp.error, ErrorCode.FirebaseError);

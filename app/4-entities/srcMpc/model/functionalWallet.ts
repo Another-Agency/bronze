@@ -1,5 +1,5 @@
 import { Provider, TransactionRequest } from "@ethersproject/abstract-provider";
-import { TypedDataDomain, TypedDataField } from "@ethersproject/abstract-signer";
+import { Signer, TypedDataDomain, TypedDataField } from "@ethersproject/abstract-signer";
 
 type WalletParams = {
     address: string;
@@ -10,7 +10,12 @@ type WalletParams = {
 };
 
 export function SilenceWallet({ address, publicKey, p1KeyShare, keygenResult, provider }: WalletParams) {
+    if (!Signer.isSigner(provider)) {
+        throw new Error("SilenceWallet requires a Signer provider");
+    }
+
     return {
+        _isSigner: true,
         address,
         publicKey,
         p1KeyShare,

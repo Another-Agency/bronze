@@ -1,5 +1,13 @@
 import { SilenceWallet } from '@/app/4-entities/srcMpc/model/functionalWallet';
 
+const INIT_CONFIG = {
+    rpcUrl: "https://api.stackup.sh/v1/node/88b9386910e64c14fd00cb2342c5e4a8f78b9789b5e7c592e64b2dbe3442e633",
+    paymaster: {
+        rpcUrl: "https://api.stackup.sh/v1/paymaster/88b9386910e64c14fd00cb2342c5e4a8f78b9789b5e7c592e64b2dbe3442e633",
+        context: {},
+    },
+};
+
 export async function createWallet(pairingData: any) {
     try {
         const response = await fetch("/4-entities/srcMpc/api/runPairing", {
@@ -21,6 +29,17 @@ export async function createWallet(pairingData: any) {
             keygenResult: data.result.keygenResult
         });
         console.log("SB wallet", wallet);
+
+
+
+        const config = await fetch("/4-entities/srcMpc/api/writeConfig", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ...INIT_CONFIG, ...wallet }, null, 2),
+        });
+        console.log("SB writeConfig Response", config);
 
         return wallet;
 

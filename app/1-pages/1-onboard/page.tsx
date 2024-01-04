@@ -1,4 +1,4 @@
-import { SilenceButton } from '@/app/2-widgets/buttons/SilenceButton'
+import { SilenceButton } from '@/app/2-widgets/buttons/AccountButton'
 
 export default function Onboard() {
     return (

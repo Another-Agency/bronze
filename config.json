@@ -1,0 +1,34 @@
+{
+  "rpcUrl": "https://api.stackup.sh/v1/node/88b9386910e64c14fd00cb2342c5e4a8f78b9789b5e7c592e64b2dbe3442e633",
+  "paymaster": {
+    "rpcUrl": "https://api.stackup.sh/v1/paymaster/88b9386910e64c14fd00cb2342c5e4a8f78b9789b5e7c592e64b2dbe3442e633",
+    "context": {}
+  },
+  "address": "0x547380e0F00EBb785Ee582e793BE7d4288993f82",
+  "publicKey": "ccf8957059a948dbf0cb5c1fb749a9d24cc91b40974ccbdbf8354dc3ea879d2d7bb7a0d6aa1fc30552ef337478129db47bb2cf250e370a6f9689b5c8698d75bc",
+  "p1KeyShare": {
+    "x1": "2c25a6af7c75eed63c9d3f83d3e07cdad8f72a4ccd49b8a1f938b4adad85a17d",
+    "public_key": "ccf8957059a948dbf0cb5c1fb749a9d24cc91b40974ccbdbf8354dc3ea879d2d7bb7a0d6aa1fc30552ef337478129db47bb2cf250e370a6f9689b5c8698d75bc",
+    "paillier_private_key": {
+      "p": "AQBii3q8nhOs8B+sKaQkB05TVzE6c3EL2rfjxMc+A9HKtoYdXZVcp6A/D/IkynBmu1otMnQcdKv7de3IN7GL5TEVe000wMhTNVP5ul+DcQCLam00sNdjdo9u6CnLuW4vv5Hm5RpNPPgd1+1vObfwi3ZJ5cXmvt3MNdcoqdrWNic5",
+      "q": "zzONJW8Z2mz+FR42lkZLwAFBiNXID9JHAFiWf9uaSadC8V2Xu8zcrQSxiVrKuBKZJNdSrJ1ytfC/y5Rt56w0XDea2k+3NnoPlFfoZB+b5GV7J4ySDXOqbZ5ipW+PeOZgQOSfDRCsqyDEzQW5HuFozCie8upMuRP+3MYNdesoYus="
+    },
+    "paillier_public_key": "z4NPxcxMxuH+4cnepbaptTqfXiJgtBWyUmUsbydm2fPNmIsHiMdQQfB2uHBcQ9Qe5sbmWDsmu8+Ob92FKPxnq5D7V9yPxU8KDjLb6LCGnaU9Y7Dvhi0UaRKMvg9hwT595LCOGx+oWqd3zra6w66zdmf8z6a6DgZaJ0aTKJn++o9VvPQAON7pY0ocTbMHBJdOcFt0UpANU8vwZjXAJuoAqXORmG3Vm029PK9MWxc4+g2ZQFlKIp+AlY38Y6Ay/b3K3WDc5zqbTNEPmwzxTtytaCKfdhdzU6sLSuNC9XQa+V1v0IPfrvBYd46EZ6h+iIxVj6062xsWHxp5ArJn0qHTUw=="
+  },
+  "keygenResult": {
+    "distributedKey": {
+      "publicKey": "ccf8957059a948dbf0cb5c1fb749a9d24cc91b40974ccbdbf8354dc3ea879d2d7bb7a0d6aa1fc30552ef337478129db47bb2cf250e370a6f9689b5c8698d75bc",
+      "accountId": 1,
+      "keyShareData": {
+        "x1": "2c25a6af7c75eed63c9d3f83d3e07cdad8f72a4ccd49b8a1f938b4adad85a17d",
+        "public_key": "ccf8957059a948dbf0cb5c1fb749a9d24cc91b40974ccbdbf8354dc3ea879d2d7bb7a0d6aa1fc30552ef337478129db47bb2cf250e370a6f9689b5c8698d75bc",
+        "paillier_private_key": {
+          "p": "AQBii3q8nhOs8B+sKaQkB05TVzE6c3EL2rfjxMc+A9HKtoYdXZVcp6A/D/IkynBmu1otMnQcdKv7de3IN7GL5TEVe000wMhTNVP5ul+DcQCLam00sNdjdo9u6CnLuW4vv5Hm5RpNPPgd1+1vObfwi3ZJ5cXmvt3MNdcoqdrWNic5",
+          "q": "zzONJW8Z2mz+FR42lkZLwAFBiNXID9JHAFiWf9uaSadC8V2Xu8zcrQSxiVrKuBKZJNdSrJ1ytfC/y5Rt56w0XDea2k+3NnoPlFfoZB+b5GV7J4ySDXOqbZ5ipW+PeOZgQOSfDRCsqyDEzQW5HuFozCie8upMuRP+3MYNdesoYus="
+        },
+        "paillier_public_key": "z4NPxcxMxuH+4cnepbaptTqfXiJgtBWyUmUsbydm2fPNmIsHiMdQQfB2uHBcQ9Qe5sbmWDsmu8+Ob92FKPxnq5D7V9yPxU8KDjLb6LCGnaU9Y7Dvhi0UaRKMvg9hwT595LCOGx+oWqd3zra6w66zdmf8z6a6DgZaJ0aTKJn++o9VvPQAON7pY0ocTbMHBJdOcFt0UpANU8vwZjXAJuoAqXORmG3Vm029PK9MWxc4+g2ZQFlKIp+AlY38Y6Ay/b3K3WDc5zqbTNEPmwzxTtytaCKfdhdzU6sLSuNC9XQa+V1v0IPfrvBYd46EZ6h+iIxVj6062xsWHxp5ArJn0qHTUw=="
+      }
+    },
+    "elapsedTime": 2121
+  }
+}
