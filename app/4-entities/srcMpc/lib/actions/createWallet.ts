@@ -1,4 +1,4 @@
-import { SilenceWallet } from '@/app/4-entities/srcMpc/model/functionalWallet';
+import { SilentWallet } from '@/app/4-entities/srcMpc/model/functionalWallet';
 
 const INIT_CONFIG = {
     rpcUrl: "https://api.stackup.sh/v1/node/88b9386910e64c14fd00cb2342c5e4a8f78b9789b5e7c592e64b2dbe3442e633",
@@ -22,12 +22,12 @@ export async function createWallet(pairingData: any) {
         const data = await response.json();
         console.log("SB Pairing Data", data);
 
-        const wallet = SilenceWallet({
-            address: data.result.address,
-            publicKey: data.result.publicKey,
-            p1KeyShare: data.result.p1KeyShare,
-            keygenResult: data.result.keygenResult
-        });
+        const wallet = new SilentWallet(
+            data.result.address,
+            data.result.publicKey,
+            data.result.p1KeyShare,
+            data.result.keygenResult
+        );
         console.log("SB wallet", wallet);
 
 
