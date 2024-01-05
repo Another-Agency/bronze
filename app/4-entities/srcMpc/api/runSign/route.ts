@@ -1,6 +1,22 @@
+import * as PairingAction from "@/app/4-entities/srcMpc/lib/actions/pairing";
+import * as SignAction from "@/app/4-entities/srcMpc/lib/actions/sign";
 import { ErrorCode, SdkError } from "@/app/4-entities/srcMpc/lib/error";
-import { runSign } from "@/app/4-entities/srcMpc/lib/sdk";
+//import { refreshPairing } from "@/app/4-entities/srcMpc/lib/sdk";
 import { fromHexStringToBytes } from "@/app/4-entities/srcMpc/lib/utils";
+import { getSilentShareStorage, saveSilentShareStorage } from "../../lib/storage";
+import { StorageData } from "../../lib/types";
+
+
+async function refreshPairing() {
+    const silentShareStorage: StorageData = await getSilentShareStorage();
+    const pairingData = silentShareStorage.pairingData;
+    const result = await PairingAction.refreshToken(pairingData);
+    await saveSilentShareStorage({
+        ...silentShareStorage,
+        pairingData: result.newPairingData,
+    });
+    return result.newPairingData;
+}
 
 export async function POST(req: Request, res: Response) {
     try {
@@ -15,6 +31,12 @@ export async function POST(req: Request, res: Response) {
         if (message.startsWith("0x")) {
             message = message.slice(2);
         }
+        const silentShareStorage = await getSilentShareStorage();
+        let pairingData = silentShareStorage.pairingData;
+        if (pairingData.tokenExpiration < Date.now() - 60000) {
+            pairingData = await refreshPairing();
+        }
+
         const messageHash = fromHexStringToBytes(messageHashHex);
         if (messageHash.length !== 32) {
             throw new SdkError(
@@ -23,7 +45,15 @@ export async function POST(req: Request, res: Response) {
             );
         }
 
-        const result = await runSign(hashAlg, message, messageHashHex, signMetadata, accountId, keyShare);
+        const result = await SignAction.sign(
+            pairingData,
+            keyShare,
+            hashAlg,
+            message,
+            messageHash,
+            signMetadata,
+            accountId
+        );
         console.log("Route runSign", result);
 
         return Response.json({ message: "runSign", result }, { status: 200 });
