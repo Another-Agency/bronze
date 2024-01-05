@@ -25,8 +25,11 @@ export function AddressButton() {
     }, []);
 
     return (
-        <button onClick={() => console.log(address)}>
-            Show Address
-        </button>
+        <div>
+            <button onClick={() => console.log(address)}>
+                Show Address
+            </button>
+            {address && <p>Your address: {address}</p>}
+        </div>
     );
 }
