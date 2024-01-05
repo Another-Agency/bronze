@@ -30,8 +30,6 @@ export async function createWallet(pairingData: any) {
         );
         console.log("SB wallet", wallet);
 
-
-
         const config = await fetch("/4-entities/srcMpc/api/writeConfig", {
             method: 'POST',
             headers: {

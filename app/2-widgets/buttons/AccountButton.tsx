@@ -55,7 +55,11 @@ export function SilenceButton() {
 
     useEffect(() => {
         if (qrCode) {
-            createWallet(pairingData);
+            createWallet(pairingData).then(wallet => {
+                // Save the wallet data to localStorage
+                localStorage.setItem('wallet', JSON.stringify(wallet));
+                console.log("SilenceButton wallet", wallet);
+            });
         }
 
     }, [qrCode, pairingData]);

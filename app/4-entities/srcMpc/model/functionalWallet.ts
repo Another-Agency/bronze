@@ -45,14 +45,22 @@ export class SilentWallet extends Signer {
     async signMessage(message: ethers.utils.Bytes): Promise<string> {
         const messageDigest = hashMessage(message);
 
-        const signSdk = await sdk.runSign(
-            "keccak256",
-            " ",
-            messageDigest,
-            "eth_sign",
-            this.keygenResult.distributedKey.accountId,
-            this.keygenResult.distributedKey.keyShareData
-        );
+        const response = await fetch('/4-entities/srcMpc/api/runSign', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                hashAlg: "keccak256",
+                message: " ",
+                messageDigest,
+                signMetadata: "eth_sign",
+                accountId: this.keygenResult.distributedKey.accountId,
+                keyShare: this.keygenResult.distributedKey.keyShareData
+            }),
+        });
+
+        const signSdk = await response.json();
 
         const signBytes = Buffer.from(signSdk.signature, "hex");
         const r = signBytes.subarray(0, 32);
@@ -92,14 +100,22 @@ export class SilentWallet extends Signer {
 
     public async signDigest(digest: BytesLike): Promise<Signature> {
         const messageDigest = hexlify(digest);
-        const sign = await sdk.runSign(
-            "keccak256",
-            " ",
-            messageDigest,
-            "eth_sign",
-            this.keygenResult.distributedKey.accountId,
-            this.keygenResult.distributedKey.keyShareData
-        );
+        const response = await fetch('/4-entities/srcMpc/api/runSign', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                hashAlg: "keccak256",
+                message: " ",
+                messageDigest,
+                signMetadata: "eth_sign",
+                accountId: this.keygenResult.distributedKey.accountId,
+                keyShare: this.keygenResult.distributedKey.keyShareData
+            }),
+        });
+
+        const sign = await response.json();
 
         const signBytes = Buffer.from(sign.signature, "hex");
         const r = signBytes.subarray(0, 32);
