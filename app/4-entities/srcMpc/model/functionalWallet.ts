@@ -42,6 +42,14 @@ export class SilentWallet extends Signer {
         return this.address;
     }
 
+    //just added not sure if this is correct yet
+    async getBalance(): Promise<ethers.BigNumber> {
+        if (!this.provider) {
+            throw new Error('Provider is not connected');
+        }
+        return this.provider.getBalance(this.address);
+    }
+
     async signMessage(message: ethers.utils.Bytes): Promise<string> {
         const messageDigest = hashMessage(message);
 
