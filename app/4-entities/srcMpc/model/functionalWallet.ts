@@ -13,6 +13,7 @@ import { _TypedDataEncoder, hashMessage } from "@ethersproject/hash";
 import { keccak256 } from "@ethersproject/keccak256";
 import { resolveProperties } from "@ethersproject/properties";
 import { UnsignedTransaction, serialize } from "@ethersproject/transactions";
+import { fromHexStringToBytes, toHexString } from "../lib/utils";
 
 export class SilentWallet extends Signer {
     public address: string;
@@ -68,17 +69,20 @@ export class SilentWallet extends Signer {
             }),
         });
 
-        const signSdk = await response.json();
+        const sign = await response.json();
 
-        const signBytes = Buffer.from(signSdk.signature, "hex");
+        const signBytes = fromHexStringToBytes(sign.signature);
         const r = signBytes.subarray(0, 32);
         const s = signBytes.subarray(32, 64);
-        const recid = signSdk.recId;
+        const recid = sign.recId;
+
+        const rHex = toHexString(r);
+        const sHex = toHexString(s);
 
         const split = splitSignature({
             recoveryParam: recid,
-            r: hexZeroPad(`0x${r.toString("hex")}`, 32),
-            s: hexZeroPad(`0x${s.toString("hex")}`, 32),
+            r: hexZeroPad(`0x${rHex}`, 32),
+            s: hexZeroPad(`0x${sHex}`, 32),
         });
 
         const signedMsg = joinSignature(split);

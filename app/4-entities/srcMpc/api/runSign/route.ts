@@ -56,7 +56,7 @@ export async function POST(req: Request, res: Response) {
         );
         console.log("Route runSign", result);
 
-        return Response.json({ message: "runSign", result }, { status: 200 });
+        return Response.json({ message: "runSign", ...result }, { status: 200 });
     } catch (e) {
         console.error(e);
         return Response.json({ message: "runSign failed", e }, { status: 500 })

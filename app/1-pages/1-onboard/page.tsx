@@ -1,6 +1,6 @@
 import { SilenceButton } from '@/app/2-widgets/buttons/AccountButton'
 import { AddressButton } from '@/app/2-widgets/buttons/AddressButton'
-//import { SimpleButton } from '@/app/2-widgets/buttons/SimpleButton'
+import { SimpleButton } from '@/app/2-widgets/buttons/SimpleButton'
 
 export default function Onboard() {
     return (
@@ -8,7 +8,7 @@ export default function Onboard() {
             <h1>Onboard</h1>
             <SilenceButton />
             <AddressButton />
-            {/* <SimpleButton /> */}
+            <SimpleButton />
         </div>
     )
 }

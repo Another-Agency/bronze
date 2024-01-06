@@ -27,9 +27,9 @@ export function AddressButton() {
     return (
         <div>
             <button onClick={() => console.log(address)}>
-                Show Address
+                EOA Address
             </button>
-            {address && <p>Your address: {address}</p>}
+            {address && <p>EOA address: {address}</p>}
         </div>
     );
 }
