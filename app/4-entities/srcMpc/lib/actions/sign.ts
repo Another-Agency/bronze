@@ -40,6 +40,7 @@ export const sign = async (
         let p1KeyShareObj = keyShare;
         let round = 1;
         const p1 = new P1Signature(sessionId, messageHash, p1KeyShareObj);
+        console.log("Sign P1", p1);
 
         let signConversation: SignConversation = {
             signMetadata,
@@ -57,6 +58,7 @@ export const sign = async (
             messageHash: utils.toHexString(messageHash),
             isApproved: null,
         };
+        console.log("Sign Conversation", signConversation);
 
         let sign = null;
         let recId = null;
@@ -76,10 +78,14 @@ export const sign = async (
                         _sodium.from_hex(pairingData.webEncPrivateKey!),
                     ),
                 );
+                console.log("Decrypted Message", decryptedMessage);
             }
+
             const decodedMessage = decryptedMessage
                 ? utils.b64ToString(decryptedMessage)
                 : null;
+
+            console.log("Decoded Message", decodedMessage);
 
             const msg = await p1
                 .processMessage(decodedMessage)

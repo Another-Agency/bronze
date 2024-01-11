@@ -52,7 +52,7 @@ export class SilentWallet extends Signer {
     }
 
     async signMessage(message: ethers.utils.Bytes): Promise<string> {
-        const messageDigest = hashMessage(message);
+        const messageHashHex = hashMessage(message);
 
         const response = await fetch('/4-entities/srcMpc/api/runSign', {
             method: 'POST',
@@ -62,14 +62,16 @@ export class SilentWallet extends Signer {
             body: JSON.stringify({
                 hashAlg: "keccak256",
                 message: " ",
-                messageDigest,
+                messageHashHex: messageHashHex,
                 signMetadata: "eth_sign",
                 accountId: this.keygenResult.distributedKey.accountId,
                 keyShare: this.keygenResult.distributedKey.keyShareData
             }),
         });
+        console.log("Fx Wallet response", response);
 
         const sign = await response.json();
+        console.log("Fx Wallet sign", sign);
 
         const signBytes = fromHexStringToBytes(sign.signature);
         const r = signBytes.subarray(0, 32);

@@ -24,18 +24,35 @@ export async function POST(req: Request, res: Response) {
             throw new Error("Request body is null");
         }
 
-        let { hashAlg, message, messageHashHex, signMetadata, accountId, keyShare } = await req.json();
-        if (messageHashHex.startsWith("0x")) {
+        const request = await req.json();
+
+        let { hashAlg, message, messageHashHex, signMetadata, accountId, keyShare } = request;
+
+        if (!messageHashHex) {
+            throw new Error("messageHashHex is undefined or null");
+        }
+
+        if (messageHashHex && messageHashHex.startsWith("0x")) {
             messageHashHex = messageHashHex.slice(2);
         }
-        if (message.startsWith("0x")) {
+
+        if (message && message.startsWith("0x")) {
             message = message.slice(2);
         }
+
         const silentShareStorage = await getSilentShareStorage();
         let pairingData = silentShareStorage.pairingData;
         if (pairingData.tokenExpiration < Date.now() - 60000) {
             pairingData = await refreshPairing();
         }
+        // console.log("Route runSign storage", silentShareStorage);
+        // console.log("Route runSign pairingData", pairingData);
+        // console.log("Route runSign keyShare", keyShare);
+        // console.log("Route runSign hashAlg", hashAlg);
+        // console.log("Route runSign message", message);
+        // console.log("Route runSign messageHashHex", messageHashHex);
+        // console.log("Route runSign signMetadata", signMetadata);
+        // console.log("Route runSign accountId", accountId);
 
         const messageHash = fromHexStringToBytes(messageHashHex);
         if (messageHash.length !== 32) {

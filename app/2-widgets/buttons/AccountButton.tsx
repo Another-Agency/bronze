@@ -7,7 +7,7 @@ import QRCode from 'react-qr-code';
 
 //const CONFIG_PATH = path.resolve(__dirname, "../config.json");
 
-export function SilenceButton() {
+export function SilenceButton({ onWalletCreated }: { onWalletCreated: (wallet: any) => void }) {
 
     const [qrCode, setQrCode] = useState<string | null>(null);
     const [pairingData, setPairingData] = useState<{
@@ -59,10 +59,11 @@ export function SilenceButton() {
                 // Save the wallet data to localStorage
                 localStorage.setItem('wallet', JSON.stringify(wallet));
                 console.log("SilenceButton wallet", wallet);
+                onWalletCreated(wallet);
             });
         }
 
-    }, [qrCode, pairingData]);
+    }, [qrCode, pairingData, onWalletCreated]);
 
     return (
         <>

@@ -13,6 +13,9 @@ export type Json =
     };
 
 export const fromHexStringToBytes = (hexString: string) => {
+    if (typeof hexString !== 'string') {
+        throw new SdkError(`expected-string`, ErrorCode.InvalidData);
+    }
     try {
         const matched = hexString.match(/.{1,2}/g);
         if (!matched) {

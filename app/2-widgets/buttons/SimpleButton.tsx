@@ -1,33 +1,29 @@
 "use client"
 
 // app/2-widgets/buttons/SimpleButton.tsx
+import SimpleAddress from '@/app/4-entities/simpleAccount/address';
 import { useEffect, useState } from 'react';
-import { Presets } from "userop";
-// @ts-ignore
-import { SilentWallet } from "@/app/4-entities/srcMpc/model/functionalWallet";
-import config from "@/config.json";
 
-export function SimpleButton() {
-    const [address, setAddress] = useState<string | null>(null);
+export function SimpleButton({ shouldFetchAddress }: { shouldFetchAddress: boolean }) {
+    const [address, setAddress] = useState<string>('');
 
     useEffect(() => {
-        const fetchAddress = async () => {
-            const simpleAccount = await Presets.Builder.SimpleAccount.init(
-                new SilentWallet(config.address, config.public_key, config.p1KeyShare, config.keygenResult),
-                config.rpcUrl
-            );
-            const address = await simpleAccount.getSender();
-            setAddress(address);
-        };
-        fetchAddress();
-    }, []);
+        if (shouldFetchAddress) {
+            const fetchAddress = async () => {
+                const address = await SimpleAddress();
+                setAddress(address);
+            };
+
+            fetchAddress();
+        }
+    }, [shouldFetchAddress]);
 
     return (
         <div>
-            <button onClick={() => console.log(address)}>
-                Simple Address
+            <button onClick={() => console.log(`Address: ${address}`)}>
+                Click me
             </button>
             {address && <p>Your address: {address}</p>}
         </div>
     );
-}
+};
