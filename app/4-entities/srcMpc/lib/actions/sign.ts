@@ -95,14 +95,29 @@ export const sign = async (
                         ErrorCode.InternalLibError,
                     );
                 });
+            console.log("Sign Msg", msg);
+            console.log("Sign Msg", msg.signature);
+            console.log("Sign Msg", msg.recid);
+
             if (msg.signature && msg.recid !== undefined) {
                 sign = msg.signature;
                 recId = msg.recid;
                 expectResponse = false;
             }
+            console.log("Sign Msg", msg);
+            if (typeof msg.msg_to_send !== 'symbol') {
+                console.log('sign', msg.msg_to_send);
+            } else {
+                console.log('sign', 'msg_to_send is a Symbol');
+            }
+            console.log("Sign Msg", msg.signature);
+            console.log("Sign Msg", msg.recid);
+
             const nonce = _sodium.randombytes_buf(
                 _sodium.crypto_box_NONCEBYTES,
             );
+            console.log("Sign Nonce", nonce);
+
             const encMessage = utils.Uint8ArrayTob64(
                 _sodium.crypto_box_easy(
                     _sodium.to_base64(
@@ -114,6 +129,8 @@ export const sign = async (
                     _sodium.from_hex(pairingData.webEncPrivateKey),
                 ),
             );
+            console.log("Sign Enc Message", encMessage);
+
             signConversation = {
                 ...signConversation,
                 message: {
@@ -123,12 +140,16 @@ export const sign = async (
                     nonce: _sodium.to_hex(nonce),
                 },
             };
+            console.log("Sign Conversation", signConversation);
+
             const signConversationNew = await sendMessage<SignConversation>(
                 pairingData.token,
                 'sign',
                 signConversation,
                 expectResponse,
             );
+            console.log("Sign Conversation New", signConversationNew);
+
             if (expectResponse && signConversationNew) {
                 signConversation = signConversationNew;
             }
@@ -140,6 +161,7 @@ export const sign = async (
             }
             round++;
         }
+        console.log("Sign Conversation", signConversation);
 
         running = false;
         return {
